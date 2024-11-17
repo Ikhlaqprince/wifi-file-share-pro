@@ -3,7 +3,7 @@ def renameConfig = [
         templateAppId               : "template.app.id",
         templateMaterialThemeName   : "TemplateTheme",
         templateApplicationClassName: "TemplateApp",
-        newPackage                  : "domain.yourname.app",
+        newPackage                  : "aaa.yourname.app",
         newProjectName              : "Your Project",
         newMaterialThemeName        : "MyMaterialTheme",
         newApplicationClassName     : "MyApp",
@@ -178,6 +178,14 @@ task keepOrRemoveDependencies {
     }
 }
 
+project('app').tasks.named {
+    // startsWith is used because this applies to multiple tasks,
+    // like formatKotlinMain, formatKotlinTest, etc.
+    it.startsWith("formatKotlin")
+}.configureEach {
+    dependsOn(rootProject.tasks.named("renameTemplate"))
+}
+
 task renameTemplate {
     description "Runs all of the necessary template setup tasks based on the renameConfig."
     group "Template Setup"
@@ -188,6 +196,8 @@ task renameTemplate {
             replaceTemplateReferences,
             deleteSetupCode,
     )
+
+    finalizedBy("app:formatKotlin")
 
     doLast {
         exec {
