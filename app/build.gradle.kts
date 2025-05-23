@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.square.moshi.kotlin)
+    implementation(libs.square.okhttp.logging.interceptor)
     implementation(libs.square.retrofit)
     implementation(libs.square.retrofit.converter.moshi)
 
