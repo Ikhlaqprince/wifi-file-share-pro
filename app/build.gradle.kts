@@ -1,39 +1,38 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.cash.paparazzi)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.google.dagger.hilt)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.kotlin.parcelize)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    namespace = "com.wifisharepro"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "template.app.id"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.compileSdk.get().toInt()
+        applicationId = "com.wifisharepro"
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
-    kotlin.compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
 
     compileOptions {
@@ -41,60 +40,23 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    buildFeatures {
-        compose = true
+    kotlinOptions {
+        jvmTarget = "17"
     }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    namespace = "template"
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
-    implementation(libs.android.material)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.bundles.androidx.xr)
-    implementation(libs.coil.compose)
-    implementation(libs.coil.okhttp)
-    implementation(libs.compose.material)
-    implementation(libs.compose.material.icons.extended)
-    implementation(libs.compose.navigation)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
-    implementation(libs.square.moshi.kotlin)
-    implementation(libs.square.okhttp.logging.interceptor)
-    implementation(libs.square.retrofit)
-    implementation(libs.square.retrofit.converter.moshi)
 
-    debugImplementation(platform(libs.compose.bom))
-    debugImplementation(libs.compose.ui.test.manifest)
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.square.leakcanary)
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+    implementation("androidx.activity:activity-compose:1.9.0")
 
-    annotationProcessor(libs.androidx.room.compiler)
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
 
-    testImplementation(libs.junit)
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(libs.androidx.test.junit)
-    androidTestImplementation(libs.compose.ui.test.junit)
-    androidTestImplementation(libs.hilt.android.testing)
-
-    ksp(libs.androidx.room.compiler)
-    ksp(libs.hilt.compiler)
-    ksp(libs.square.moshi.kotlin.codegen)
-
-    kspAndroidTest(libs.hilt.android.compiler)
+    implementation("org.nanohttpd:nanohttpd:2.3.1")
 }
